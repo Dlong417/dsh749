@@ -6,6 +6,9 @@
 <meta name="theme-color" content="#0d1117">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="推演助手">
 <title>7/49 周期规则推演与验证助手</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -602,6 +605,10 @@ renderSrc();
 regenerate();
 renderLedger();
 renderRecent();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}
 </script>
 </body>
 </html>
