@@ -151,6 +151,15 @@ footer{margin-top:18px;font-size:12px;color:#6a7684;text-align:center}
   <div id="btBody"></div>
 </section>
 
+<section class="card">
+  <h2>胜率看板 <span class="tag">台账 + 规则回测</span></h2>
+  <div id="boardBody" class="hint">点下面的按钮，跑一次最近 500 期的规则回测。</div>
+  <div class="f-row" style="margin-top:10px">
+    <button id="btnBoard">回测 500 期并生成看板</button>
+  </div>
+  <div class="msg" id="boardMsg"></div>
+</section>
+
 <div class="grid2">
   <section class="card">
     <h2>最近开奖 <span class="tag">含我的录入</span></h2>
@@ -405,8 +414,10 @@ function renderLedger(){
   if (settled.length){
     const m = settled.reduce((a,p)=>a+p.hit,0)/settled.length;
     const z = (m-1)/Math.sqrt(0.749/settled.length);
+    let streak = 0, mxz = 0;
+    for (const p of settled) { if (p.hit === 0) { streak++; mxz = Math.max(mxz, streak); } else streak = 0; }
     document.getElementById('ledMeta').textContent =
-      `已结算 ${settled.length} 期　场均 ${m.toFixed(3)}　z=${z.toFixed(2)}　（随机基准 1.000，z>2 才算有统计意义）`;
+      `已结算 ${settled.length} 期　场均 ${m.toFixed(3)}　z=${z.toFixed(2)}　最长连 0 命中 ${mxz} 期　（随机基准 1.000）`;
   } else {
     document.getElementById('ledMeta').textContent = '还没有已结算的预测。录入开奖后会自动结算。';
   }
